@@ -1,17 +1,32 @@
 #include <iostream>
-#include <iomanip>
+#include <cassert>
+
+bool isPalindrome(unsigned int nombre) {
+    const unsigned int dimensionNonOptimisee = 100;
+    unsigned char conversionNombre[dimensionNonOptimisee];
+
+    int debut, fin;
+
+    for (fin = 0; nombre > 0; nombre /= 10, fin++) {
+        conversionNombre[fin] = nombre % 10;
+    }
+
+    for (debut = 0, --fin; debut < fin && conversionNombre[debut] == conversionNombre[fin]; ++debut, --fin)
+        ;
+
+    return debut >= fin;
+}
 
 int main() {
 
-    std::cout << "Table ASCII" << std::endl;
-    for (uint indice = 32; indice < 256; indice++) {
-        std::cout << std::setiosflags(std::ios::right) << std::setw(3)
-                  << indice << "->" << "'" << static_cast<char>(indice) << "'" << "..";
+    std::cout << "Debut Palindrome" << std::endl;
 
-        if ((indice - 31) % 8 == 0) {
-            std::cout << std::endl;
-        }
-    }
+    assert(isPalindrome(12321) == true);
+    assert(isPalindrome(11) == true);
+    assert(isPalindrome(1) == true);
+    assert(isPalindrome(123) == false);
+
+    std::cout << "Fin Palindrome" << std::endl;
 
     return 0;
 }
